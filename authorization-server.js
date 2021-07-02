@@ -112,29 +112,29 @@ app.post('/token', (req, res) => {
 		return
 	}
 	const code = req.body.code;
-	if (!code || !authorizationCodes[cost]) {
+	if (!code || !authorizationCodes[code]) {
 		res.status(401).send('Error: invalid code')
 		return
 	}
-	const {clientReq, userName} = authorizationCodes[code];
-	delete authorizationCodes[code];
+	const { clientReq, userName } = authorizationCodes[code]
+	delete authorizationCodes[code]
 	const token = jwt.sign(
 		{
 			userName,
-			scope: clientReq.scope
+			scope: clientReq.scope,
 		},
 		config.privateKey,
 		{
 			algorithm: 'RS256',
 			expiresIn: 300,
-			issuer: 'http://localhost:' + config.port
+			issuer: 'http://localhost:' + config.port,
 		}
-	);
+	)
 	res.json({
 		access_token: token,
 		token_type: 'Bearer',
-		scope: clientReq.scope
-	});
+		scope: clientReq.scope,
+	})
 
 
 })
