@@ -53,6 +53,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 /*
 Your code here
 */
+app.get('/authorize', (req, res) =>{
+	res.status(200).end();
+	if(req.query.client_id in Object.keys(clients)){
+		res.status(200);
+	} else{
+		res.status(401);
+	}
+	const scope = clients[req.query.client_id].scopes.split(":")
+
+});
 
 const server = app.listen(config.port, "localhost", function () {
 	var host = server.address().address
