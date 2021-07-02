@@ -82,42 +82,38 @@ app.post('/approve', (req, res) => {
 	if (!userName || users[userName] !== password) {
 		res.status(401).send('Error: user not authorized')
 		return
-	} else {
-		res.status(200).send('Corrent username and password');
 	}
-	const clientReq = requests[requestId];
-	delete requests[requestId];
+	const clientReq = requests[requestId]
+	delete requests[requestId]
 	if (!clientReq) {
-		res.status(401).send("Error: invalid user request");
+		res.status(401).send("Error: invalid user request")
 		return
-	} else {
-		res.status(200).send('Corrent credentials');
-	};
+	}
 	const code = randomString();
 	authorizationCodes[code] = { clientReq, userName }
-	const redirectUri = url.parse(clientReq.redirect_uri);
+	const redirectUri = url.parse(clientReq.redirect_uri)
 	redirectUri.query = {
 		code,
-		state: clientReq.state
+		state: clientReq.state,
 	}
-	res.status(302).redirect(url.format(redirectUri));
-});
+	res.redirect(url.format(redirectUri));
+})
 
 app.post('/token', (req, res) => {
-	let authCredentials = req.headers.authorization;
+	let authCredentials = req.headers.authorization
 	if (!authCredentials) {
-		res.status(401).send('Error: not authorized');
+		res.status(401).send('Error: not authorized')
 		return
 	}
-	const { clientId, clientSecret } = decodeAuthCredentials(authCredentials);
-	const client = client[clientId];
+	const { clientId, clientSecret } = decodeAuthCredentials(authCredentials)
+	const client = clients[clientId]
 	if (!client || client.clientSecret !== clientSecret) {
-		res.status(401).send('Error: client not authorized');
+		res.status(401).send('Error: client not authorized')
 		return
 	}
 	const code = req.body.code;
 	if (!code || !authorizationCodes[cost]) {
-		res.status(401).send('Error: invalid code');
+		res.status(401).send('Error: invalid code')
 		return
 	}
 	const {clientReq, userName} = authorizationCodes[code];
