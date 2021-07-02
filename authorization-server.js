@@ -1,3 +1,4 @@
+const url = require("url")
 const fs = require("fs")
 const express = require("express")
 const bodyParser = require("body-parser")
@@ -91,7 +92,7 @@ app.post('/approve', (req, res) => {
 		return
 	} else {
 		res.status(200).send('Corrent credentials');
-	}
+	};
 	const code = randomString();
 	authorizationCodes[code] = { clientReq, userName }
 	const redirectUri = url.parse(clientReq.redirect_uri);
