@@ -81,12 +81,16 @@ app.post('/approve', (req, res) => {
 	if (!userName || users[userName] !== password) {
 		res.status(401).send('Error: user not authorized')
 		return
+	} else {
+		res.status(200).send('Corrent username and password');
 	}
 	const clientReq = requests[requestId];
 	delete requests[requestId];
 	if (!clientReq) {
 		res.status(401).send("Error: invalid user request");
 		return
+	} else {
+		res.status(200).send('Corrent credentials');
 	}
 	const code = randomString();
 	authorizationCodes[code] = { clientReq, userName }
@@ -95,7 +99,7 @@ app.post('/approve', (req, res) => {
 		code,
 		state: clientReq.state
 	}
-	req.redirect(url.format(redirectUri));
+	res.state(302).redirect(url.format(redirectUri));
 });
 
 app.post('/token', (req, res) => {
