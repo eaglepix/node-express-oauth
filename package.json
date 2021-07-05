@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "client.js",
 	"scripts": {
+		"start": "nodemon client.js",
 		"test": "mocha --exit ./test/**/*",
 		"test-dev": "mocha --watch ./test/**/*"
 	},
