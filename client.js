@@ -26,6 +26,25 @@ app.use(bodyParser.urlencoded({ extended: true }))
 /*
 Your code here
 */
+app.get('/authorize', (req, res) => {
+	let state = randomString();
+	res_str = {
+		response_type: "code",
+		client_id: config.clientId,
+		redirect_uri: config.redirectUri,
+		scope: "permission:name permission:date_of_birth",
+		state: state
+	}
+	res.redirectUri(authorizationEndpoint + "?" + "response_type")
+})
+
+app.get("/callback", (req, res) => {
+	if(req.query.state!==state){
+		res.status(403).send('Forbidden')
+		return
+	}
+	res.v
+})
 
 const server = app.listen(config.port, "localhost", function () {
 	var host = server.address().address
