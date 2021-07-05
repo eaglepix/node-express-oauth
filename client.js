@@ -37,7 +37,7 @@ app.get('/authorize', (req, res) => {
 		scope: "permission:name permission:date_of_birth",
 		state: state,
 	}
-	res.redirectUri(redirectUrl)
+	res.redirect(url.format(redirectUrl))
 })
 
 app.get("/callback", (req, res) => {
@@ -45,7 +45,7 @@ app.get("/callback", (req, res) => {
 		res.status(403).send('Error: state mismatch')
 		return
 	}
-	const { code } = res.query
+	const { code } = req.query
 	axios({
 		method: "POST",
 		url: config.tokenEndpoint,
@@ -68,7 +68,7 @@ app.get("/callback", (req, res) => {
 			})
 		})
 		.then((response) => {
-			res.render("Welcome", { user: response.data })
+			res.render("welcome", { user: response.data })
 		})
 		.catch((err) => {
 			console.error(err)
